@@ -3,11 +3,12 @@
 import Vue from 'vue'
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
+import SvgIcon from '@/components/SvgIcon'
 import App from './App'
 import router from './router'
 
 Vue.use(ElementUI)
-
+Vue.component('svg-icon', SvgIcon)
 Vue.config.productionTip = false
 
 /* eslint-disable no-new */
