@@ -6,7 +6,7 @@
       </div>
       <el-form-item prop="username">
         <span class="svg-container svg-container_login">
-          <svg-icon icon-class="user" />
+          <i class="el-icon-edit"></i>
         </span>
         <el-input name="username" type="text" v-model="form.username" autoComplete="on" placeholder="username" />
       </el-form-item>
@@ -20,13 +20,15 @@
         </span>
       </el-form-item>
 
-      <el-button type="primary" style="width:100%;margin-bottom:30px;" @click="handleLogin">Login</el-button>
+      <el-button type="primary" style="width:50%;margin-bottom:30px;" @click="handleLogin">Login</el-button>
+      <el-button type="primary" style="width:49%;margin-bottom:30px;margin:0;" @click="handleSignUp">Register</el-button>
 
     </el-form>
   </div>
 </template>
 
 <script>
+import {toLogin} from '../data/fetchData.js'
 export default {
   name: 'signin',
   data () {
@@ -37,15 +39,19 @@ export default {
       },
       passwordType: 'password',
       ruleForm: {
-        username: [{ required: true, message: '请输入用户名', trigger: 'blur' }]
+        username: [{ required: true, message: '请输入用户名', trigger: 'blur' }],
+        password: [{ required: true, message: '请输入密码', trigger: 'blur' }]
       }
     }
   },
   methods: {
     handleLogin () {
-      if (this.form.username === '') {
-        return false
-      }
+      toLogin(this.form.username, this.form.password).then(result => {
+        window.location.href = 'http://localhost:3000/posts'
+      })
+    },
+    handleSignUp () {
+      console.log('sign-up')
     }
   }
 }
