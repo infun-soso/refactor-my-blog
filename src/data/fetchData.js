@@ -5,3 +5,7 @@ export const toLogin = (name, psw) => fetch('/api/signin', {
   },
   body: JSON.stringify({name: name, password: psw})
 }).then(response => response.json())
+
+export const getPosts = () => fetch('/api/posts').then(response => response.json())
+
+export const toLogout = () => fetch('/api/signout').then(response => response.json())
