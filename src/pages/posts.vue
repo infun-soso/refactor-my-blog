@@ -1,46 +1,70 @@
 <template>
   <div class="posts">
-    <el-container>
-      <el-header>
-        <el-row :gutter="24">
-          <el-col :span="22">
-            <div class="item-container">
-              <el-tabs v-model="activeName" @tab-click="handleClick">
-                <el-tab-pane label="GitHub" name="first">GitHub</el-tab-pane>
-                <el-tab-pane label="全部文章" name="second">全部文章</el-tab-pane>
-              </el-tabs>
-            </div>
-            </el-col>
-            <el-col :span="2">
-              <div class="info-box">
-                <el-button type="text">注册</el-button>
-                <el-button type="text">登录</el-button>
-              </div>
-            </el-col>
-          </el-row>
-        </el-header>
-      <el-main>Main</el-main>
-    </el-container>
+    <el-card v-for="(item, index) in posts" :key="index" shadow="always">
+      <div class="post-item">
+        <router-link :to="'/posts/' + item.id">
+          <img :src="'http://localhost:3000/images/' + item.avator + '.png'" alt="">
+          <div class="post-title">
+            {{ item.title }}
+          </div>
+          <div class="post-markdown">
+            {{ item.md }}
+          </div>
+        </router-link>
+      </div>
+      <div class="item-detail">
+        <span>author: {{ item.name }}</span>
+        <span>评论: {{ item.comments }}</span>
+        <span>浏览: {{ item.pv }}</span>
+        <span class="moment">{{ item.moment }}</span>
+      </div>
+    </el-card>
+    <Pagination :pageSize="10" :totalItem="500"></Pagination>
   </div>
 </template>
 
 <script>
+import {getPosts} from '../data/fetchData.js'
+import Pagination from '../components/Pagination'
 export default {
+  name: 'posts',
+  components: {Pagination},
   data () {
     return {
-      activeName: 'first'
+      posts: []
     }
   },
-  methods: {
-    handleClick (tab, event) {
-      console.log(tab, event)
-    }
+  mounted () {
+    getPosts().then(res => {
+      this.posts = res.data.allPosts
+    })
   }
 }
 </script>
 
 <style lang="scss" scoped>
-.info-box {
-  text-align: right;
+
+.el-card {
+  margin: 10px 0
+}
+.post-item img {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-radius: 5px;
+}
+.post-title,.post-markdown {
+  height: 30px;
+  line-height: 30px;
+  font-size: 16px;
+  margin-left: 55px;
+  border-bottom: 1px solid #F2F6FC
+}
+.item-detail{
+  margin-left: 55px;
+  margin-top: 20px;
+  .moment{
+    float: right;
+  }
 }
 </style>

@@ -12,7 +12,7 @@
       </el-form-item>
       <el-form-item prop="password">
         <span class="svg-container">
-          <svg-icon icon-class="password" />
+          <i class="el-icon-document"></i>
         </span>
         <el-input name="password" :type="passwordType" v-model="form.password" autoComplete="on" placeholder="password" />
         <span class="show-pwd">
@@ -34,8 +34,8 @@ export default {
   data () {
     return {
       form: {
-        username: 'admin',
-        password: '111111'
+        username: 'wangyanfeng',
+        password: '123456'
       },
       passwordType: 'password',
       ruleForm: {
@@ -46,8 +46,19 @@ export default {
   },
   methods: {
     handleLogin () {
+      var _that = this
       toLogin(this.form.username, this.form.password).then(result => {
-        window.location.href = 'http://localhost:3000/posts'
+        if (result.status === 1) {
+          this.$message({
+            message: result.msg,
+            type: 'success',
+            duration: 1500,
+            onClose () {
+              localStorage.setItem('username', _that.form.username)
+              _that.$router.push({ path: '/mainpart/posts' })
+            }
+          })
+        }
       })
     },
     handleSignUp () {
