@@ -53,7 +53,7 @@ export default {
           this.$message({
             message: res.msg,
             type: 'success',
-            duration: 1500,
+            duration: 1600,
             onClose () {
               window.location.reload()
             }
@@ -75,7 +75,7 @@ export default {
 .info-box {
   text-align: right;
   position: absolute;
-  line-height: 60px;
+   line-height: 60px;
   right: 20px;
   top: 0;
 }
