@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import {toLogin} from '../data/fetchData.js'
+import {toLogin} from '../api/index'
 export default {
   name: 'signin',
   data () {
@@ -46,18 +46,16 @@ export default {
   },
   methods: {
     handleLogin () {
-      var _that = this
       toLogin(this.form.username, this.form.password).then(result => {
-        if (result.status === 1) {
+        let res = result.data
+        if (res.status === 1) {
           this.$message({
-            message: result.msg,
+            message: res.msg,
             type: 'success',
-            duration: 1500,
-            onClose () {
-              localStorage.setItem('username', _that.form.username)
-              _that.$router.push({ path: '/mainpart/posts' })
-            }
+            duration: 1500
           })
+          this.$store.dispatch('UserLogin', res.data.token)
+          // this.$router.push({ path: '/mainpart/posts' })
         }
       })
     },
