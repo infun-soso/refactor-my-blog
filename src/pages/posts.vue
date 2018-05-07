@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import {getPosts} from '../data/fetchData.js'
+import {getPosts} from '../api/index'
 import Pagination from '../components/Pagination'
 export default {
   name: 'posts',
@@ -35,7 +35,8 @@ export default {
     }
   },
   mounted () {
-    getPosts().then(res => {
+    getPosts().then(result => {
+      let res = result.data
       this.posts = res.data.allPosts
     })
   }

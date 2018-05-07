@@ -28,7 +28,7 @@
 </template>
 
 <script>
-import {toLogin} from '../api/index'
+import {login} from '../api/index'
 export default {
   name: 'signin',
   data () {
@@ -46,7 +46,7 @@ export default {
   },
   methods: {
     handleLogin () {
-      toLogin(this.form.username, this.form.password).then(result => {
+      login(this.form.username, this.form.password).then(result => {
         let res = result.data
         if (res.status === 1) {
           this.$message({
@@ -55,7 +55,9 @@ export default {
             duration: 1500
           })
           this.$store.dispatch('UserLogin', res.data.token)
-          // this.$router.push({ path: '/mainpart/posts' })
+          this.$store.dispatch('UserNameLogin', res.data.username)
+          this.$store.commit('AVATOR', res.data.avator)
+          this.$router.push({ path: '/mainpart/posts' })
         }
       })
     },

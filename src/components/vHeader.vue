@@ -17,7 +17,14 @@
     <div class="info-box" style="line-height: 60px;margin-right: 10px">
       <div v-if="isLogin">
         <span style="color: white">Hi, {{ userName }}</span>
-        <el-button type="text" @click="toLogout">退出</el-button>
+        <el-popover
+          placement="down"
+          width="20"
+          trigger="click">
+           <el-button @click="toLogout" type="text">退出</el-button>
+          <img slot="reference" :src="'http://localhost:3000/images/' + avator + '.png'" class="avator" alt="">
+        </el-popover>
+        <!-- <img :src="'http://localhost:3000/images/' + avator + '.png'" class="avator" alt=""> -->
       </div>
       <div v-else>
         <el-button type="text">注册</el-button>
@@ -28,7 +35,7 @@
 </template>
 
 <script>
-import {toLogout} from '../data/fetchData'
+import {logout} from '../api/index'
 export default {
   name: 'vheader',
   data () {
@@ -36,7 +43,8 @@ export default {
       activeIndex: '/posts',
       isrouter: true,
       isLogin: false,
-      userName: ''
+      userName: '',
+      avator: ''
     }
   },
   methods: {
@@ -47,23 +55,23 @@ export default {
       this.$router.push({path: '/signin'})
     },
     toLogout () {
-      toLogout().then(res => {
+      logout().then(result => {
+        let res = result.data
         if (res.status === 1) {
-          localStorage.removeItem('username')
           this.$message({
             message: res.msg,
             type: 'success',
-            duration: 1600,
-            onClose () {
-              window.location.reload()
-            }
+            duration: 1500
           })
+          this.isLogin = false
+          this.$store.commit('LOGOUT')
         }
       })
     }
   },
   mounted () {
-    this.userName = localStorage.getItem('username')
+    this.avator = sessionStorage.getItem('avator')
+    this.userName = sessionStorage.getItem('username')
     if (this.userName) {
       this.isLogin = true
     }
@@ -78,5 +86,10 @@ export default {
    line-height: 60px;
   right: 20px;
   top: 0;
+}
+.avator{
+  width: 30px;
+  height: 30px;
+  border-radius: 50%
 }
 </style>

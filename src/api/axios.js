@@ -10,10 +10,15 @@ const instance = axios.create({
 instance.defaults.headers.post['Content-Type'] = 'application/json; charset=UTF-8'
 // 拦截请求
 instance.interceptors.request.use(config => {
-  // Do something before the request send
+  // 每次发送请求之前检测都vuex存有token,那么都要放在请求头发送给服务器
+  if (store.state.token) {
+    console.log('拦截验证token')
+    config.headers.Authorization = `Bearer ${store.state.token}`
+  }
   return config
-}, error => {
-  return Promise.reject(error)
+},
+err => {
+  return Promise.reject(err)
 })
 
 // respone拦截器
@@ -25,9 +30,10 @@ instance.interceptors.response.use(
     if (error.response) {
       switch (error.response.status) {
         case 401:
+          console.log('token过期')
           store.dispatch('UserLogout') // 可能是token过期，清除它
           router.replace({ // 跳转到登录页面
-            path: 'login',
+            path: '/signin',
             query: { redirect: router.currentRoute.fullPath } // 将跳转的路由path作为参数，登录成功后跳转到该路由
           })
       }
