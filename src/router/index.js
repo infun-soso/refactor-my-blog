@@ -1,8 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import SignIn from '@/pages/signin'
-import Posts from '@/pages/posts'
-import MainPart from '@/pages/mainpart'
+
+const _import_ = file => () => import('../pages/' + file + '.vue')
 
 Vue.use(Router)
 
@@ -14,18 +13,27 @@ export default new Router({
     },
     {
       path: '/mainpart',
-      component: MainPart,
+      component: _import_('mainpart'),
       children: [
         {
           path: 'posts',
-          component: Posts
+          component: _import_('posts')
+        },
+        {
+          path: 'create',
+          meta: {login: true},
+          component: _import_('create')
+        },
+        {
+          path: 'myposts',
+          component: _import_('myposts')
         }
       ]
     },
     {
       path: '/signin',
       name: 'signin',
-      component: SignIn
+      component: _import_('signin')
     }
   ]
 })
