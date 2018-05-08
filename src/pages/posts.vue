@@ -13,7 +13,7 @@
         </router-link>
       </div>
       <div class="item-detail">
-        <span>author: {{ item.name }}</span>
+        <span>author: <router-link :to="'/mainpart/myposts?author=' + item.name">{{ item.name }}</router-link></span>
         <span>评论: {{ item.comments }}</span>
         <span>浏览: {{ item.pv }}</span>
         <span class="moment">{{ item.moment }}</span>

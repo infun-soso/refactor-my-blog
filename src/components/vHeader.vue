@@ -9,9 +9,9 @@
         class="el-menu-demo" mode="horizontal"
         @select="handleSelect">
         <el-menu-item index="https://github.com/infun-soso">GitHub</el-menu-item>
-        <el-menu-item index="/posts">全部文章</el-menu-item>
-        <el-menu-item index="/posts1/">我的文章</el-menu-item>
-        <el-menu-item index="4">发表文章</el-menu-item>
+        <el-menu-item index="/mainpart/posts">全部文章</el-menu-item>
+        <el-menu-item index="/mainpart/myposts">我的文章</el-menu-item>
+        <el-menu-item index="/mainpart/create">发表文章</el-menu-item>
       </el-menu>
     </div>
     <div class="info-box" style="line-height: 60px;margin-right: 10px">
@@ -40,7 +40,7 @@ export default {
   name: 'vheader',
   data () {
     return {
-      activeIndex: '/posts',
+      activeIndex: this.$route.path,
       isrouter: true,
       isLogin: false,
       userName: '',
@@ -49,7 +49,11 @@ export default {
   },
   methods: {
     handleSelect (tab, event) {
-
+      if (tab === '/mainpart/myposts') {
+        this.$router.push({path: tab, query: {author: this.userName}})
+      } else {
+        this.$router.push({path: tab})
+      }
     },
     toLogin () {
       this.$router.push({path: '/signin'})
@@ -61,12 +65,21 @@ export default {
           this.$message({
             message: res.msg,
             type: 'success',
-            duration: 1500
+            duration: 1000
           })
           this.isLogin = false
           this.$store.commit('LOGOUT')
+          this.$router.push({path: '/mainpart/posts'})
         }
       })
+    }
+  },
+  created () {
+    // this.activeIndex = this.$route.path
+  },
+  watch: {
+    $route () {
+      this.activeIndex = this.$route.path
     }
   },
   mounted () {
@@ -91,5 +104,9 @@ export default {
   width: 30px;
   height: 30px;
   border-radius: 50%
+}
+.el-popover{
+  min-width: 155px;
+  right: -10px;
 }
 </style>

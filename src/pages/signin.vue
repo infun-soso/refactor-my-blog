@@ -57,13 +57,17 @@ export default {
           this.$store.dispatch('UserLogin', res.data.token)
           this.$store.dispatch('UserNameLogin', res.data.username)
           this.$store.commit('AVATOR', res.data.avator)
-          this.$router.push({ path: '/mainpart/posts' })
+          const oPath = this.$route.query.redirect ? this.$route.query.redirect : '/mainpart/posts'
+          this.$router.push({ path: oPath })
         }
       })
     },
     handleSignUp () {
       console.log('sign-up')
     }
+
+  },
+  mounted () {
   }
 }
 </script>

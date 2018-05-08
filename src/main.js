@@ -5,7 +5,7 @@ import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css'
 import SvgIcon from '@/components/SvgIcon'
 import App from './App'
-import router from './router'
+import router from './router/permission.js'
 import store from './store'
 
 Vue.use(ElementUI)
